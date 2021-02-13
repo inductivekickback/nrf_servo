@@ -36,7 +36,7 @@ typedef struct
 } servo_group_t;
 
 struct servo_data {
-	bool ready;
+    bool ready;
 };
 
 struct servo_cfg {
@@ -50,26 +50,26 @@ struct servo_cfg {
 
 static servo_group_t m_avail_pwms[] = {
 #if CONFIG_NRF_SW_SERVO_ALLOW_PWM0
-	{
-		.pwm_instance = NRFX_PWM_INSTANCE(0),
+    {
+        .pwm_instance = NRFX_PWM_INSTANCE(0),
         .ready        = false,
     },
 #endif
 #if CONFIG_NRF_SW_SERVO_ALLOW_PWM1
-	{
-		.pwm_instance = NRFX_PWM_INSTANCE(1),
+    {
+        .pwm_instance = NRFX_PWM_INSTANCE(1),
         .ready        = false,
     },
 #endif
 #if CONFIG_NRF_SW_SERVO_ALLOW_PWM2
-	{
-		.pwm_instance = NRFX_PWM_INSTANCE(2),
+    {
+        .pwm_instance = NRFX_PWM_INSTANCE(2),
         .ready        = false,
     },
 #endif
 #if CONFIG_NRF_SW_SERVO_ALLOW_PWM3
-	{
-		.pwm_instance = NRFX_PWM_INSTANCE(3),
+    {
+        .pwm_instance = NRFX_PWM_INSTANCE(3),
         .ready        = false,
     },
 #endif
@@ -78,57 +78,57 @@ static servo_group_t m_avail_pwms[] = {
 #define NUM_AVAIL_PWMS (sizeof(m_avail_pwms)/sizeof(servo_group_t))
 
 static int channel_get(nrf_pwm_values_individual_t *p_values,
-	                     const struct servo_cfg *p_cfg,
-	                     uint8_t *p_value)
+                         const struct servo_cfg *p_cfg,
+                         uint8_t *p_value)
 {
-	uint16_t *p_channel;
+    uint16_t *p_channel;
 
     switch (p_cfg->pwm_channel) {
     case 0:
-    	p_channel = &p_values->channel_0;
-    	break;
+        p_channel = &p_values->channel_0;
+        break;
     case 1:
-    	p_channel = &p_values->channel_1;
-    	break;
+        p_channel = &p_values->channel_1;
+        break;
     case 2:
-    	p_channel = &p_values->channel_2;
-    	break;
+        p_channel = &p_values->channel_2;
+        break;
     case 3:
-    	p_channel = &p_values->channel_3;
-    	break;
+        p_channel = &p_values->channel_3;
+        break;
     default:
-    	return -EINVAL;
+        return -EINVAL;
     }
     *p_value = (uint8_t)PAM(*p_channel & ~POLARITY_BIT, p_cfg->min_pulse_us, p_cfg->max_pulse_us);
     return 0;
 }
 
 static int channel_set(nrf_pwm_values_individual_t *p_values,
-	                     const struct servo_cfg *p_cfg,
-	                     uint8_t value)
+                         const struct servo_cfg *p_cfg,
+                         uint8_t value)
 {
-	uint16_t *p_channel;
+    uint16_t *p_channel;
 
-	if (SERVO_MAX_VALUE < value)
-	{
-		return -EINVAL;
-	}
+    if (SERVO_MAX_VALUE < value)
+    {
+        return -EINVAL;
+    }
 
     switch (p_cfg->pwm_channel) {
     case 0:
-    	p_channel = &p_values->channel_0;
-    	break;
+        p_channel = &p_values->channel_0;
+        break;
     case 1:
-    	p_channel = &p_values->channel_1;
-    	break;
+        p_channel = &p_values->channel_1;
+        break;
     case 2:
-    	p_channel = &p_values->channel_2;
-    	break;
+        p_channel = &p_values->channel_2;
+        break;
     case 3:
-    	p_channel = &p_values->channel_3;
-    	break;
+        p_channel = &p_values->channel_3;
+        break;
     default:
-    	return -EINVAL;
+        return -EINVAL;
     }
     *p_channel = (MAP(value, p_cfg->min_pulse_us, p_cfg->max_pulse_us) | POLARITY_BIT);
     return 0;
@@ -148,13 +148,13 @@ static int nrf_sw_servo_init(const struct device *dev)
     }
 
     if (NUM_AVAIL_PWMS <= p_cfg->pwm_index) {
-    	goto ERR_EXIT;
+        goto ERR_EXIT;
     }
 
     p_inst = &m_avail_pwms[p_cfg->pwm_index].pwm_instance;
 
     if (!m_avail_pwms[p_cfg->pwm_index].ready) {
-    	nrfx_err_t nrfx_err;
+        nrfx_err_t nrfx_err;
         nrfx_pwm_config_t const pwm_config = {
             .output_pins = {
                 NRFX_PWM_PIN_NOT_USED,
@@ -176,25 +176,25 @@ static int nrf_sw_servo_init(const struct device *dev)
             goto ERR_EXIT;
         }
 
-      	nrf_pwm_sequence_t const seq = {
-	        .values.p_individual = &m_avail_pwms[p_cfg->pwm_index].pwm_values,
-	        .length              = 4,
-	        .repeats             = 0,
-	        .end_delay           = 0
-	    };
+        nrf_pwm_sequence_t const seq = {
+            .values.p_individual = &m_avail_pwms[p_cfg->pwm_index].pwm_values,
+            .length              = 4,
+            .repeats             = 0,
+            .end_delay           = 0
+        };
         err = nrfx_pwm_simple_playback(p_inst, &seq, 1, NRFX_PWM_FLAG_LOOP);
 
-    	/* NOTE: nrfx_pwm_simple_playback returns NULL instead of NRFX_SUCCESS. */
-    	if (err) {
-    		goto ERR_EXIT;
-    	}
+        /* NOTE: nrfx_pwm_simple_playback returns NULL instead of NRFX_SUCCESS. */
+        if (err) {
+            goto ERR_EXIT;
+        }
 
-    	m_avail_pwms[p_cfg->pwm_index].ready = true;
+        m_avail_pwms[p_cfg->pwm_index].ready = true;
     }
 
     err = channel_set(&m_avail_pwms[p_cfg->pwm_index].pwm_values, p_cfg, p_cfg->init_value);
     if (0 != err) {
-    	goto ERR_EXIT;
+        goto ERR_EXIT;
     }
 
     nrf_gpio_pin_clear(p_cfg->pin);
@@ -210,8 +210,8 @@ ERR_EXIT:
 
 static int nrf_sw_servo_write(const struct device *dev, uint8_t value)
 {
-	const struct servo_cfg *p_cfg  = dev->config;
-	struct servo_data      *p_data = dev->data;
+    const struct servo_cfg *p_cfg  = dev->config;
+    struct servo_data      *p_data = dev->data;
 
     if (unlikely(!p_data->ready)) {
         LOG_WRN("Device is not initialized yet");
@@ -220,7 +220,7 @@ static int nrf_sw_servo_write(const struct device *dev, uint8_t value)
 
     int err = channel_set(&m_avail_pwms[p_cfg->pwm_index].pwm_values, p_cfg, value);
     if (0 != err) {
-    	return err;
+        return err;
     }
 
     return 0;
@@ -228,8 +228,8 @@ static int nrf_sw_servo_write(const struct device *dev, uint8_t value)
 
 static int nrf_sw_servo_read(const struct device *dev, uint8_t *value)
 {
-	const struct servo_cfg *p_cfg  = dev->config;
-	struct servo_data      *p_data = dev->data;
+    const struct servo_cfg *p_cfg  = dev->config;
+    struct servo_data      *p_data = dev->data;
 
     if (unlikely(!p_data->ready)) {
         LOG_WRN("Device is not initialized yet");
@@ -238,7 +238,7 @@ static int nrf_sw_servo_read(const struct device *dev, uint8_t *value)
 
     int err = channel_get(&m_avail_pwms[p_cfg->pwm_index].pwm_values, p_cfg, value);
     if (0 != err) {
-    	return err;
+        return err;
     }
 
     return 0;
