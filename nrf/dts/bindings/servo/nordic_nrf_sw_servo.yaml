@@ -1,0 +1,39 @@
+# Copyright (c) 2021 Daniel Veilleux
+# SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
+
+description: Servo implementation that uses NRFX PWM driver
+
+compatible: "nordic,nrf-sw-servo"
+
+include: base.yaml
+
+properties:
+  label:
+    required: true
+    type: string
+    description: Human readable string describing the device (used as device_get_binding() argument)
+
+  status:
+    required: true
+    type: string
+    description: Human readable string describing the device's status
+
+  pin:
+    type: int
+    description: Output pin, using NRFX-compatible index
+    required: true
+
+  init_value:
+    type: int
+    description: Initial value [0, 100]
+    required: true
+
+  min_pulse_us:
+    type: int
+    description: Minimum pulse width in microseconds [0, 1500]
+    required: true
+
+  max_pulse_us:
+    type: int
+    description: Maximum pulse width in microseconds [1500, 3000]
+    required: true
