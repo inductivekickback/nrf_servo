@@ -21,13 +21,13 @@ LOG_MODULE_REGISTER(nordic_nrf_sw_servo, CONFIG_NRF_SW_SERVO_LOG_LEVEL);
    nrf_drv_pwm then the polarity of the PWM waveform will be inverted. */
 #define POLARITY_BIT  (0x8000UL)
 
-// Simple functions for mapping a value betwen [0, 100] to the
-// range [min, max] and vice versa.
+/* Simple functions for mapping a value betwen [0, 100] to the
+   range [min, max] and vice versa. */
 #define MAP(value, min, max) ((value) * ((max) - (min))/100 + (min))
 #define PAM(value, min, max) (((value) - (min)) * 100 / ((max) - (min)))
 
-// Structs of this type need to kept in the global portion (static) of RAM
-// (not const) because they are accessed by EasyDMA.
+/* Structs of this type need to kept in the global portion (static) of RAM
+   (not const) because they are accessed by EasyDMA. */
 typedef struct
 {
     nrfx_pwm_t pwm_instance;
