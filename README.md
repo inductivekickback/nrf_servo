@@ -1,7 +1,7 @@
-This is a Zephyr RTOS driver for controlling servomotors. It was built from the v1.4.2 tag of the [nRF Connect SDK (NCS)](https://github.com/nrfconnect/sdk-nrf).
+This is a Zephyr RTOS driver for controlling servomotors (servos). It was built from the v1.4.2 tag of the [nRF Connect SDK (NCS)](https://github.com/nrfconnect/sdk-nrf).
 
 ### About servomotors
-A typical servomotor (servo) has 180 degrees of rotation and accepts a PWM signal with a period of 20ms where:
+A typical servomotor has 180 degrees of rotation and accepts a PWM signal with a period of 20ms where:
  - A pulse of 1.0ms (5% duty cycle) is 0 degrees
  - A pulse of 1.5ms (7.5% duty cycle) is 90 degrees
  - A pulse of 2.0ms (10% duty cycle) is 180 degrees
