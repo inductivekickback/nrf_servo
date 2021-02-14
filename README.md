@@ -30,3 +30,11 @@ Then add the following to **prj.conf**:
 ```
 CONFIG_NRF_SW_SERVO=y
 ```
+The init value will be written to the device at startup. New values can be written a particular servo:
+```
+ret = servo_write(dev, value);
+```
+or read:
+```
+ret = servo_read(dev, &value);
+```
