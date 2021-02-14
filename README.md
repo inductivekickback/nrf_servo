@@ -9,7 +9,24 @@ A typical servomotor (servo) has 180 degrees of rotation and accepts a PWM signa
 However, these pulse widths are not standardized so it's not uncommon to find servos where, for example, 0 degrees corresponds to a pulse of 0.5ms and 180 degrees is 2.5ms. If a pulse width is used that is outside of the range of a given servo then the servo's motor can stall, drawing an undesirable amount of current.
 
 ### About the driver
-The NRFX PWM driver works well with servos. However, mapping individual servss to channels of particular instances of PWM peripherals is a chore. This driver automatically assigns PWM channels to each servo device in the DT so the application doesn't have to. Of course PWM peripherals might be needed for other purposes in the application so access to specific instances can be denied via the CONFIG_NRF_SW_SERVO_ALLOW_PWMX settings.
+The NRFX PWM driver works well with servos. However, mapping individual servos to channels of particular instances of PWM peripherals is a chore. This driver automatically assigns PWM channels to each servo device in the DT so the application doesn't have to. Of course PWM peripherals might be needed for other purposes in the application so access to specific instances can be denied via the CONFIG_NRF_SW_SERVO_ALLOW_PWMX settings.
 
 Each servo device in the DT specifies a pin, initial value (in the range of [0, 100]), a minimum pulse width, and a maximum pulse width. The driver then maps the values in the range [0, 100] to the specified range of pulse widths.
 
+### Using the driver
+This is an example DT entry in the project's local overlay (e.g. "nrf52840dk_nrf52840.overlay"):
+```
+servo0: nrf-servo0 {
+    compatible = "nordic,nrf-sw-servo";
+    label = "SERVO_0";
+    pin = <31>;
+    init_value = <50>;
+    min_pulse_us = <1000>;
+    max_pulse_us = <2000>;
+    status = "okay";
+};
+```
+Then add the following to **prj.conf**:
+```
+CONFIG_NRF_SW_SERVO=y
+```
