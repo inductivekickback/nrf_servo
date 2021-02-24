@@ -6,4 +6,4 @@
 
 zephyr_library()
 
-zephyr_library_sources(servo.c)
+zephyr_library_sources(nrf_sw_servo.c)
