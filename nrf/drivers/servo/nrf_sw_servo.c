@@ -262,9 +262,10 @@ static const struct servo_driver_api servo_driver_api = {
         .pwm_index    = (n / NRF_PWM_CHANNEL_COUNT) \
     }; \
     static struct servo_data servo_data_##n; \
-    DEVICE_AND_API_INIT(nrf_sw_servo_##n, \
+    DEVICE_DEFINE(nrf_sw_servo_##n, \
                 DT_LABEL(INST(n)), \
                 nrf_sw_servo_init, \
+                NULL, \
                 &servo_data_##n, \
                 &servo_cfg_##n, \
                 POST_KERNEL, \
