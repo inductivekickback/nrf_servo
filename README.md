@@ -1,4 +1,4 @@
-This is a Zephyr RTOS driver for controlling servomotors (servos). It was built from the v1.4.2 tag of the [nRF Connect SDK (NCS)](https://github.com/nrfconnect/sdk-nrf).
+This is a Zephyr RTOS driver for controlling servomotors (servos). It was built from the v2.4.0 tag of the [nRF Connect SDK (NCS)](https://github.com/nrfconnect/sdk-nrf).
 
 <p align="center"><img src="https://user-images.githubusercontent.com/6494431/108953457-10ee0f00-7620-11eb-92ee-487393d81d06.JPG" width="256"></p>
 
@@ -16,12 +16,11 @@ Nordic's [PWM peripheral](https://infocenter.nordicsemi.com/index.jsp?topic=%2Fp
 Each servo device in the DT specifies a pin, initial value (in the range of [0, 100]), a minimum pulse width, and a maximum pulse width. The driver then maps the values in the range [0, 100] to the specified range of pulse widths.
 
 ### Using the driver
-This is an example DT entry in the project's local overlay (e.g. "nrf52840dk_nrf52840.overlay"):
+This is an example DT entry in the project's local overlay (e.g. "nrf52dk_nrf52832.overlay"):
 ```
 servo0: nrf-servo0 {
-    compatible = "nordic,nrf-sw-servo";
-    label = "SERVO_0";
-    pin = <31>;
+    compatible = "nrf-sw-servo";
+    pin = <27>;
     init_value = <50>;
     min_pulse_us = <1000>;
     max_pulse_us = <2000>;
