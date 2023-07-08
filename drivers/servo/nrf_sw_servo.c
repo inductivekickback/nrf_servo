@@ -4,18 +4,19 @@
  * SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
  */
 
-#define DT_DRV_COMPAT nordic_nrf_sw_servo
+#define DT_DRV_COMPAT nrf_sw_servo
 
-#include <kernel.h>
-#include <device.h>
-#include <drivers/servo.h>
-#include <devicetree.h>
+#include <zephyr/kernel.h>
+#include <zephyr/device.h>
+#include <zephyr/devicetree.h>
+
+#include <drivers/nrf_sw_servo.h>
 
 #include <hal/nrf_gpio.h>
 #include <nrfx_pwm.h>
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 
-LOG_MODULE_REGISTER(nordic_nrf_sw_servo, CONFIG_NRF_SW_SERVO_LOG_LEVEL);
+LOG_MODULE_REGISTER(nrf_sw_servo, CONFIG_NRF_SW_SERVO_LOG_LEVEL);
 
 /* If this flag is not set in the sequence values that are passed to
    nrf_drv_pwm then the polarity of the PWM waveform will be inverted. */
@@ -250,7 +251,7 @@ static const struct servo_driver_api servo_driver_api = {
     .read  = nrf_sw_servo_read,
 };
 
-#define INST(num) DT_INST(num, nordic_nrf_sw_servo)
+#define INST(num) DT_INST(num, nrf_sw_servo)
 
 #define SERVO_DEVICE(n) \
     static const struct servo_cfg servo_cfg_##n = { \
@@ -262,17 +263,17 @@ static const struct servo_driver_api servo_driver_api = {
         .pwm_index    = (n / NRF_PWM_CHANNEL_COUNT) \
     }; \
     static struct servo_data servo_data_##n; \
-    DEVICE_AND_API_INIT(nrf_sw_servo_##n, \
-                DT_LABEL(INST(n)), \
-                nrf_sw_servo_init, \
-                &servo_data_##n, \
-                &servo_cfg_##n, \
-                POST_KERNEL, \
-                CONFIG_NRF_SW_SERVO_INIT_PRIORITY, \
-                &servo_driver_api);
+    DEVICE_DT_DEFINE(INST(n), \
+            nrf_sw_servo_init, \
+            NULL, \
+            &servo_data_##n, \
+            &servo_cfg_##n, \
+            POST_KERNEL, \
+            CONFIG_NRF_SW_SERVO_INIT_PRIORITY, \
+            &servo_driver_api);
 
 DT_INST_FOREACH_STATUS_OKAY(SERVO_DEVICE)
 
 #if DT_NUM_INST_STATUS_OKAY(DT_DRV_COMPAT) == 0
-#warning "Nordic nRF-SW-Servo driver enabled without any devices"
+#warning "nRF-SW-Servo driver enabled without any devices"
 #endif

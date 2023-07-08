@@ -1,7 +1,7 @@
 /**
- * @file servo.h
+ * @file nrf_sw_servo.h
  *
- * @brief Public API for the servo driver
+ * @brief Public API for the servo driver based on the NRFX PWM driver
  */
 
 /*
@@ -9,15 +9,15 @@
  *
  * SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
  */
-#ifndef ZEPHYR_INCLUDE_SERVO_H_
-#define ZEPHYR_INCLUDE_SERVO_H_
+#ifndef NRF_SW_SERVO_H_
+#define NRF_SW_SERVO_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <zephyr.h>
-#include <device.h>
+#include <zephyr/kernel.h>
+#include <zephyr/device.h>
 #include <stdbool.h>
 
 #define SERVO_MIN_VALUE      0
@@ -91,4 +91,4 @@ static inline int servo_read(const struct device *dev, uint8_t *value)
 }
 #endif
 
-#endif /* ZEPHYR_INCLUDE_SERVO_H_ */
+#endif /* NRF_SW_SERVO_H_ */

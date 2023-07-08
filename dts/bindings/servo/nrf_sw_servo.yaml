@@ -3,16 +3,11 @@
 
 description: Servo implementation that uses NRFX PWM driver
 
-compatible: "nordic,nrf-sw-servo"
+compatible: "nrf-sw-servo"
 
 include: base.yaml
 
 properties:
-  label:
-    required: true
-    type: string
-    description: Human readable string describing the device (used as device_get_binding() argument)
-
   status:
     required: true
     type: string
@@ -37,3 +32,4 @@ properties:
     type: int
     description: Maximum pulse width in microseconds [1500, 3000]
     required: true
+

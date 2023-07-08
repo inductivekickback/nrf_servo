@@ -1,4 +1,4 @@
-# Nordic servo
+# Servo implementation that uses NRFX PWM driver
 #
 # Copyright (c) 2021 Daniel Veilleux
 #
@@ -9,7 +9,7 @@ menuconfig NRF_SW_SERVO
 	bool "Servo implementation that uses NRFX PWM driver"
 	select NRFX_PWM
 	help
-	  Enable Nordic servo driver
+	  Enable nRF SW servo driver
 
 if NRF_SW_SERVO
 
@@ -38,6 +38,7 @@ config NRF_SW_SERVO_ALLOW_PWM3
 	bool "Allow PWM3"
 	default y
     select NRFX_PWM3
+    depends on HAS_HW_NRF_PWM3
 	help
 		Allow the driver to use PWM peripheral instance 3
 
