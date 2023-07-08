@@ -13,7 +13,7 @@ LOG_MODULE_REGISTER(main, CONFIG_APP_LOG_LEVEL);
 
 void main(void)
 {
-	const struct device *servo = DEVICE_DT_GET(DT_NODELABEL(servo0));
+    const struct device *servo = DEVICE_DT_GET(DT_NODELABEL(servo0));
     if (servo == NULL) {
         printk("Failed to get servo dev binding\n");
         return;
