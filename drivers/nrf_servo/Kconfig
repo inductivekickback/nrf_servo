@@ -5,36 +5,36 @@
 # SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
 #
 
-menuconfig NRF_SW_SERVO
+menuconfig NRF_SERVO
 	bool "Servo implementation that uses NRFX PWM driver"
 	select NRFX_PWM
 	help
-	  Enable nRF SW servo driver
+	  Enable nRF servo driver
 
-if NRF_SW_SERVO
+if NRF_SERVO
 
-config NRF_SW_SERVO_ALLOW_PWM0
+config NRF_SERVO_ALLOW_PWM0
 	bool "Allow PWM0"
 	default y
     select NRFX_PWM0
 	help
 		Allow the driver to use PWM peripheral instance 0
 
-config NRF_SW_SERVO_ALLOW_PWM1
+config NRF_SERVO_ALLOW_PWM1
 	bool "Allow PWM1"
 	default y
     select NRFX_PWM1
 	help
 		Allow the driver to use PWM peripheral instance 1
 
-config NRF_SW_SERVO_ALLOW_PWM2
+config NRF_SERVO_ALLOW_PWM2
 	bool "Allow PWM2"
 	default y
     select NRFX_PWM2
 	help
 		Allow the driver to use PWM peripheral instance 2
 
-config NRF_SW_SERVO_ALLOW_PWM3
+config NRF_SERVO_ALLOW_PWM3
 	bool "Allow PWM3"
 	default y
     select NRFX_PWM3
@@ -42,14 +42,14 @@ config NRF_SW_SERVO_ALLOW_PWM3
 	help
 		Allow the driver to use PWM peripheral instance 3
 
-config NRF_SW_SERVO_INIT_PRIORITY
+config NRF_SERVO_INIT_PRIORITY
 	int "Servo init priority"
 	default 90
 	help
 	  Servo initialization priority
 
-module = NRF_SW_SERVO
-module-str = NRF-SW-SERVO
+module = NRF_SERVO
+module-str = NRF-SERVO
 source "${ZEPHYR_BASE}/subsys/logging/Kconfig.template.log_config"
 
-endif #NRF_SW_SERVO
+endif #NRF_SERVO
