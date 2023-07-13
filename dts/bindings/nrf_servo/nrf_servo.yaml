@@ -3,7 +3,7 @@
 
 description: Servo implementation that uses NRFX PWM driver
 
-compatible: "nrf-sw-servo"
+compatible: "nrf-servo"
 
 include: base.yaml
 
