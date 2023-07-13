@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <zephyr/kernel.h>
 
-#include "drivers/nrf_sw_servo.h"
+#include "drivers/nrf_servo.h"
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main, CONFIG_APP_LOG_LEVEL);

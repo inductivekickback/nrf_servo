@@ -1,5 +1,5 @@
 /**
- * @file nrf_sw_servo.h
+ * @file nrf_servo.h
  *
  * @brief Public API for the servo driver based on the NRFX PWM driver
  */
@@ -9,8 +9,8 @@
  *
  * SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
  */
-#ifndef NRF_SW_SERVO_H_
-#define NRF_SW_SERVO_H_
+#ifndef NRF_SERVO_H_
+#define NRF_SERVO_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -91,4 +91,4 @@ static inline int servo_read(const struct device *dev, uint8_t *value)
 }
 #endif
 
-#endif /* NRF_SW_SERVO_H_ */
+#endif /* NRF_SERVO_H_ */

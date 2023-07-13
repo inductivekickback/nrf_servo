@@ -2,5 +2,5 @@
 # SPDX-License-Identifier: Apache-2.0
 
 menu "Drivers"
-rsource "nrf_sw_servo/Kconfig"
+rsource "nrf_servo/Kconfig"
 endmenu

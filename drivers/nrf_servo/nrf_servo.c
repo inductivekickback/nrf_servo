@@ -4,19 +4,19 @@
  * SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
  */
 
-#define DT_DRV_COMPAT nrf_sw_servo
+#define DT_DRV_COMPAT nrf_servo
 
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 
-#include <drivers/nrf_sw_servo.h>
+#include <drivers/nrf_servo.h>
 
 #include <hal/nrf_gpio.h>
 #include <nrfx_pwm.h>
 #include <zephyr/logging/log.h>
 
-LOG_MODULE_REGISTER(nrf_sw_servo, CONFIG_NRF_SW_SERVO_LOG_LEVEL);
+LOG_MODULE_REGISTER(nrf_servo, CONFIG_NRF_SERVO_LOG_LEVEL);
 
 /* If this flag is not set in the sequence values that are passed to
    nrf_drv_pwm then the polarity of the PWM waveform will be inverted. */
@@ -50,25 +50,25 @@ struct servo_cfg {
 };
 
 static servo_group_t m_avail_pwms[] = {
-#if CONFIG_NRF_SW_SERVO_ALLOW_PWM0
+#if CONFIG_NRF_SERVO_ALLOW_PWM0
 	{
 		.pwm_instance = NRFX_PWM_INSTANCE(0),
         .ready        = false,
     },
 #endif
-#if CONFIG_NRF_SW_SERVO_ALLOW_PWM1
+#if CONFIG_NRF_SERVO_ALLOW_PWM1
 	{
 		.pwm_instance = NRFX_PWM_INSTANCE(1),
         .ready        = false,
     },
 #endif
-#if CONFIG_NRF_SW_SERVO_ALLOW_PWM2
+#if CONFIG_NRF_SERVO_ALLOW_PWM2
 	{
 		.pwm_instance = NRFX_PWM_INSTANCE(2),
         .ready        = false,
     },
 #endif
-#if CONFIG_NRF_SW_SERVO_ALLOW_PWM3
+#if CONFIG_NRF_SERVO_ALLOW_PWM3
 	{
 		.pwm_instance = NRFX_PWM_INSTANCE(3),
         .ready        = false,
@@ -135,7 +135,7 @@ static int channel_set(nrf_pwm_values_individual_t *p_values,
     return 0;
 }
 
-static int nrf_sw_servo_init(const struct device *dev)
+static int nrf_servo_init(const struct device *dev)
 {
     int err;
     nrfx_pwm_t *p_inst;
@@ -209,7 +209,7 @@ ERR_EXIT:
     return -ENXIO;
 }
 
-static int nrf_sw_servo_write(const struct device *dev, uint8_t value)
+static int nrf_servo_write(const struct device *dev, uint8_t value)
 {
 	const struct servo_cfg *p_cfg  = dev->config;
 	struct servo_data      *p_data = dev->data;
@@ -227,7 +227,7 @@ static int nrf_sw_servo_write(const struct device *dev, uint8_t value)
     return 0;
 }
 
-static int nrf_sw_servo_read(const struct device *dev, uint8_t *value)
+static int nrf_servo_read(const struct device *dev, uint8_t *value)
 {
 	const struct servo_cfg *p_cfg  = dev->config;
 	struct servo_data      *p_data = dev->data;
@@ -246,12 +246,12 @@ static int nrf_sw_servo_read(const struct device *dev, uint8_t *value)
 }
 
 static const struct servo_driver_api servo_driver_api = {
-    .init  = nrf_sw_servo_init,
-    .write = nrf_sw_servo_write,
-    .read  = nrf_sw_servo_read,
+    .init  = nrf_servo_init,
+    .write = nrf_servo_write,
+    .read  = nrf_servo_read,
 };
 
-#define INST(num) DT_INST(num, nrf_sw_servo)
+#define INST(num) DT_INST(num, nrf_servo)
 
 #define SERVO_DEVICE(n) \
     static const struct servo_cfg servo_cfg_##n = { \
@@ -264,16 +264,16 @@ static const struct servo_driver_api servo_driver_api = {
     }; \
     static struct servo_data servo_data_##n; \
     DEVICE_DT_DEFINE(INST(n), \
-            nrf_sw_servo_init, \
+            nrf_servo_init, \
             NULL, \
             &servo_data_##n, \
             &servo_cfg_##n, \
             POST_KERNEL, \
-            CONFIG_NRF_SW_SERVO_INIT_PRIORITY, \
+            CONFIG_NRF_SERVO_INIT_PRIORITY, \
             &servo_driver_api);
 
 DT_INST_FOREACH_STATUS_OKAY(SERVO_DEVICE)
 
 #if DT_NUM_INST_STATUS_OKAY(DT_DRV_COMPAT) == 0
-#warning "nRF-SW-Servo driver enabled without any devices"
+#warning "nRF-Servo driver enabled without any devices"
 #endif
