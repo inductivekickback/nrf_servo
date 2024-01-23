@@ -39,3 +39,15 @@ or read:
 ```
 ret = servo_read(dev, &value);
 ```
+
+### Building the application
+There are several [topologies](https://docs.zephyrproject.org/latest/develop/west/workspaces.html) to choose from but T2 is probably the easiest way to get started with a custom driver:
+```
+nrfutil toolchain-manager install --ncs-version v2.4.0
+nrfutil toolchain-manager launch --shell --ncs-version v2.4.0
+west init -m https://github.com/inductivekickback/nrf_servo.git --mr t2_build nrf_servo_workspace
+cd nrf_servo_workspace
+west update
+cd nrf_servo/app
+west build -b nrf52dk_nrf52832
+```
