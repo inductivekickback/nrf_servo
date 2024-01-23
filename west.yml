@@ -14,5 +14,5 @@ manifest:
       import: true
 
   self:
-    path: app
+    path: nrf_servo
 
